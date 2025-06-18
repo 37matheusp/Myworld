@@ -1,11 +1,15 @@
+
 <!DOCTYPE html>
+
 <html>
 <head>
-    <title>Myworld</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js"></script>
-    <style>
+<title>Myworld</title>
+<link href="https://unpkg.com/leaflet/dist/leaflet.css" rel="stylesheet"/>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js">map.removeControl(map.zoomControl);
+</script>
+<script src="https://unpkg.com/leaflet-omnivore@0.3.4/leaflet-omnivore.min.js">map.removeControl(map.zoomControl);
+</script>
+<style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -62,12 +66,12 @@
         .toolbar {
             display: none;
             position: fixed;
-            bottom: 0;
+            top: 50px;
             left: 0;
             width: 100%;
             background-color: #f1f1f1;
             padding: 10px;
-            box-shadow: 0px -2px 5px rgba(0,0,0,0.5);
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.5);
             z-index: 1000;
         }
         .sidebar-section {
@@ -104,64 +108,119 @@
         .folder.open ul {
             display: block;
         }
-    </style>
+    
+#sidebar {
+  display: none;
+}
+#toolbar {
+  display: none;
+}
+
+
+.menu-bar > div {
+  margin-right: 20px;
+  cursor: pointer;
+  position: relative;
+  padding-top: 5px; /* Adicionado para ajustar verticalmente */
+  line-height: 30px; /* Ajuste opcional para centralizar verticalmente */
+}
+</style>
+<style>
+.menu-bar, .sidebar, .toolbar, .submenu {
+    background-color: #2a2a2a !important;
+    color: #ffffff !important;
+}
+.menu-bar a, .submenu a {
+    color: #00ffcc !important;
+}
+</style>
+<style>
+    body {
+        background-color: #1e1e1e; /* cinza escuro */
+        color: #ffffff; /* texto claro para contraste */
+    }
+    button {
+        background-color: #333333; /* fundo escuro */
+        color: #ffffff; /* texto claro */
+        border: 1px solid #555555; /* borda suave */
+    }
+    input[type="text"], input[type="search"], input[type="password"], textarea {
+        background-color: #333333; /* fundo escuro */
+        color: #ffffff; /* texto claro */
+        border: 1px solid #555555; /* borda suave */
+    }
+</style>
+<style>
+.leaflet-popup-content-wrapper {
+    background: #333 !important;
+    color: #fff !important;
+}
+.leaflet-popup-content-wrapper a {
+    color: #1e90ff !important;
+}
+</style>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-    <div class="menu-bar">
-        <div>
+<div class="menu-bar">
+<img alt="Myworld Logo" src="roxologo.png" style="height: 30px; margin-right: 20px;"/>
+<div>
             Arquivo
             <div class="submenu">
-                <div onclick="document.getElementById('fileInput').click();">Abrir</div>
-                <div onclick="saveFiles()">Salvar</div>
-                <div onclick="window.print()">Imprimir</div>
-            </div>
-        </div>
-        <div>
+<div onclick="document.getElementById('fileInput').click();">Abrir</div>
+<div onclick="saveFiles()">Salvar</div>
+<div onclick="window.print()">Imprimir</div>
+</div>
+</div>
+<div>
             Visualizar
             <div class="submenu">
-                <div onclick="toggleSidebar()">Barra Lateral</div>
-                <div onclick="toggleToolbar()">Barra de Ferramentas</div>
-            </div>
-        </div>
-        <div>
+<div onclick="toggleSidebar()">Barra Lateral</div>
+<div onclick="toggleToolbar()">Barra de Ferramentas</div>
+</div>
+</div>
+<div>
             Adicionar
             <div class="submenu">
-                <div onclick="createFolder()">Criar Pasta</div>
-                <div onclick="addMarker()">Marcador</div>
-                <div onclick="addPath()">Caminhos</div>
-            </div>
-        </div>
-        <div>
+<div onclick="createFolder()">Criar Pasta</div>
+<div onclick="addMarker()">Marcador</div>
+<div onclick="addPath()">Caminhos</div>
+</div>
+</div>
+<div>
             Ajuda
             <div class="submenu">
-                <div onclick="showInstructions()">Instruções</div>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar" id="sidebar">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Pesquisar...">
-            <button onclick="searchMarkers(document.getElementById('searchInput').value)">Buscar</button>
-        </div>
-        <div class="sidebar-section">
-            <h3>Lugares</h3>
-            <ul id="fileList"></ul>
-        </div>
-        <div class="sidebar-section">
-            <h3>Camadas</h3>
-            <label><input type="checkbox" onclick="toggleMarkers(this.checked)" checked> Marcadores</label><br>
-            <label><input type="checkbox" onclick="togglePaths(this.checked)" checked> Rotas</label><br>
-            <label><input type="checkbox" onclick="toggleFiles(this.checked)" checked> Arquivos</label>
-        </div>
-    </div>
-    <div class="toolbar" id="toolbar">
-        <button onclick="addMarker()">Adicionar Marcador</button>
-        <button onclick="addPath()">Adicionar Caminho</button>
-    </div>
-    <div id="map"></div>
-    <input type="file" id="fileInput" style="display:none" accept=".kml,.kmz" onchange="handleFileUpload(event)" />
-
-    <script>
+<div onclick="showInstructions()">Instruções</div>
+</div>
+</div>
+</div>
+<div class="sidebar" id="sidebar">
+<div class="search-bar">
+</div>
+<div class="sidebar-section">
+<h3>Lugares</h3>
+<ul id="fileList"></ul>
+</div>
+<div class="sidebar-section">
+<h3>Camadas</h3>
+<label><input checked="" onclick="toggleMarkers(this.checked)" type="checkbox"/> Marcadores</label><br/>
+<label><input checked="" onclick="togglePaths(this.checked)" type="checkbox"/> Rotas</label><br/>
+<label><input checked="" onclick="toggleFiles(this.checked)" type="checkbox"/> Arquivos</label>
+</div>
+</div>
+<div class="toolbar" id="toolbar" style="display: block; position: fixed; top: 50px; left: 0; width: 100%; background-color: #f1f1f1; padding: 0; box-shadow: 0px 2px 5px rgba(0,0,0,0.5); z-index: 999;"><div class="search-bar" style="display: inline-flex; margin-left: 20px;"><input id="searchInput" placeholder="Pesquisar..." type="text"/><button onclick="searchMarkers(document.getElementById('searchInput').value)">Buscar</button></div>
+<button onclick="addMarker()">📍</button>
+<button onclick="addPath()">🛣️</button>
+<div id="custom-zoom-controls" style="display: inline-block; margin-left: 20px;">
+<button onclick="map.zoomIn()">+</button>
+<button onclick="map.zoomOut()">−</button>
+</div>
+</div>
+<button onclick="addMarker()">📍</button>
+<button onclick="addPath()">🛣️</button>
+<div id="map"></div>
+<input accept=".kml,.kmz" id="fileInput" onchange="handleFileUpload(event)" style="display:none" type="file"/>
+<script>
         var map = L.map('map').setView([-23.55052, -46.633308], 13); // Coordenadas de São Paulo, Brasil
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -187,7 +246,7 @@
                             var popupContent = '<b>Informações:</b><br>';
                             for (var key in layer.feature.properties) {
                                 if (layer.feature.properties.hasOwnProperty(key)) {
-                                    popupContent += key + ': ' + layer.feature.properties[key] + '<br>';
+                                    popupContent += key + ': ' + decodeURIComponent(escape(layer.feature.properties[key])) + '<br>';
                                 }
                             }
                             layer.bindPopup(popupContent);
@@ -205,7 +264,7 @@
 
                             if (layer.feature.geometry.type === 'LineString') {
                                 if (layer.feature.properties.description.includes('Area: R')) {
-                                    layer.setStyle({ color: 'green' });
+                                    layer.setStyle({ color: '#ADFF2F' });
                                 } else if (layer.feature.properties.description.includes('Area: U')) {
                                     layer.setStyle({ color: 'gold' });
                                 }
@@ -413,6 +472,31 @@ paths.push(polyline);
 function showInstructions() {
 alert('Instruções de uso:\n\n1. Use a aba "Arquivo" para abrir, salvar e imprimir arquivos KML/KMZ.\n2. Use a aba "Visualizar" para alternar a barra lateral e a barra de ferramentas.\n3. Use a aba "Adicionar" para criar pastas, adicionar marcadores e caminhos.\n4. Use a aba "Ajuda" para ver as instruções.');
 }
+map.removeControl(map.zoomControl);
+</script>
+<script>
+    // Camadas base
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    });
+
+    var satellite = L.tileLayer('https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3'],
+        attribution: '© Google Maps'
+    });
+
+    // Adiciona controle de camadas
+    var baseMaps = {
+        "OpenStreetMap": osm,
+        "Satélite": satellite
+    };
+
+    L.control.layers(baseMaps, null, { position: 'bottomright' }).addTo(map);
+
+    // Define a camada padrão
+    satellite.addTo(map);
+map.removeControl(map.zoomControl);
 </script>
 </body>
 </html>
